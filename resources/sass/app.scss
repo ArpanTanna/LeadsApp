@@ -1,0 +1,200 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Font-awesome
+@import '~font-awesome/css/font-awesome.css';
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/src/index.scss';
+
+.ttype1 thead {
+    color: #00a3e8;
+    th {
+        border-bottom: 2px solid #00a3e8;
+    }
+}
+
+body {
+    background: #eef2f4 url(#{$assetPath}images/pattern-grey.svg) 0 0 repeat;
+}
+a:hover {
+    text-decoration: none;
+}
+.text-t1 {
+    color: $color1;
+}
+.ul-lsn {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.progress .bg-normal {
+    background-color: #999;
+}
+.tooltip > .tooltip-inner {
+    /*background-color: #aaa;
+    border: 1px solid #000;
+    color: $color1;*/
+}
+.loader-parent {
+    position: relative;
+    &.loading::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: "";
+        display: block;
+        background: rgba(200, 200, 200, 0.5) url('/images/loader.gif') no-repeat center center;
+        z-index: 9;
+    }
+}
+
+.navbar-laravel {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+header {
+    .navbar {
+        padding: 0;
+        background: #f8fafc;
+        * {
+            color: #000;
+        }
+        .navbar-brand {
+            padding: 13px 15px;
+            color: $color1;
+            @media (max-width: 767.98px) {
+                margin: 0 auto;
+            }
+        }
+        .navbar-collapse {
+            @media (max-width: 767.98px) {
+                border-top: 1px solid #999;
+            }
+        }
+        .navbar-toggler {
+            background: #535c69;
+        }
+        .navbar-toggler-icon {
+            background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,163,232, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+        }
+        .navbar-nav {
+            li {
+                margin: 0 2px;
+                a.nav-link {
+                    padding: 15px 13px;
+                    border-bottom: 2px solid transparent;
+                }
+                a.nav-link:hover {
+                    color: $color1;
+                }
+            }
+            .active {
+                a.nav-link {
+                    background: #eee;
+                    color: $color1;
+                    border-color: $color1;
+                }
+            }
+        }
+    }
+}
+
+.page-container {
+    margin-top: 55px;
+}
+
+.leftbar-container {
+    width: 220px;
+    flex: 0 0 220px;
+    background: #535c69;
+    position: relative;
+    -webkit-transition: linear 0.7s;
+    transition: linear 0.7s;
+    @media (max-width: 767.98px) {
+        position: fixed;
+        height: 100%;
+        z-index: 99;
+        left: -220px;
+        min-height: auto !important;
+        &.open-sidebar {
+            left: 0;
+        }
+    }
+    .arrow-sidebar {
+        padding: 10px;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        background: #535c69;
+        color: #00a3e8;
+    }
+    .list-sidebar {
+        li {
+            a {
+                padding: 10px 15px;
+                display: block;
+                color: #eee;
+                &:hover {
+                    background: rgba(255,255,255,0.2);
+                }
+                i {
+                    padding-right: 8px;
+                }
+            }
+            &.active {
+                a, a:hover {
+                    color: #fff;
+                    background: $color1;
+                }
+            }
+        }
+    }
+}
+
+.center-container {
+    @media (min-width: 768px) {
+        max-width: calc(100vw - 220px);
+    }
+    .pagetitle-wrap {
+        display: flex;
+        padding-left: 5px;
+        margin: 10px 0;
+        border-bottom: 2px solid #aaa;
+        h1 {
+            display: flex;
+            font-size: 2rem;
+        }
+    }
+    .cform {
+        label {
+            color: $blue;
+            font-weight: bold;
+        }
+    }
+    .status-box {
+        min-width: 120px;
+        max-width: 200px;
+        .progress-bar {
+            cursor: pointer;
+            width: 25%;
+            -webkit-box-shadow: inset 0 0 1px #000000;
+            -moz-box-shadow: inset 0 0 1px #000000;
+            box-shadow: inset 0 0 1px #000000;
+            &:hover {
+                -webkit-box-shadow: inset 0 0 3px #000000;
+                -moz-box-shadow: inset 0 0 3px #000000;
+                box-shadow: inset 0 0 3px #000000;
+            }
+        }
+    }
+}

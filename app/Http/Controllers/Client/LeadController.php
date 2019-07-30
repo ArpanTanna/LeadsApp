@@ -49,8 +49,16 @@ class LeadController extends ClientCoreController
                 $return_data = $this->fetchrecords();
                 break;
 
+            case 'leadinfo':
+                $return_data = $this->leadinfo();
+                break;
+
             case 'updatelead':
                 $return_data = $this->updatelead();
+                break;
+
+            case 'emailmanager':
+                $return_data = $this->emailmanager();
                 break;
         }
 
@@ -164,6 +172,39 @@ class LeadController extends ClientCoreController
     }
 
     /**
+     * Fetch email sending information
+     *
+     * @return array
+     */
+    public function leadinfo()
+    {
+        $return_data = ['status' => 0];
+
+        $user_id = \Auth::id();
+        $lead_id = $this->secure_data(Input::get('id'));
+        if($lead_id)
+        {
+            $record = Lead::where('id', $lead_id)->where('user_id', $user_id)->first();
+            if($record)
+            {
+                $email_info = \App\Models\Emailinfo::select('emailinfo.*', 'funnels.name')->join('funnels', 'funnels.id', '=', 'emailinfo.funnel_id')
+                    ->where('lead_id', $lead_id)->orderBy('emailinfo.id', 'desc')->get()->toArray();
+
+                $return_data['status'] = 1;
+                $return_data['records'] = $email_info;
+            }
+            else {
+                $return_data['message'] = "An error occurred, please try again.";
+            }
+        }
+        else {
+            $return_data['message'] = "An error occurred, please try again.";
+        }
+
+        return $return_data;
+    }
+
+    /**
      * Add / Update lead
      *
      * @return array
@@ -196,10 +237,10 @@ class LeadController extends ClientCoreController
             }
 
             $data['other_info'] = json_encode($data['other_info']);
-            $data['ukey'] = $ukey;
 
             $id = $this->secure_data(Input::get('id', ''));
             if ($id == '' && !$id) {
+                $data['ukey'] = $ukey;
                 $lead_data = Lead::create($data);
                 $msg = 'Lead inserted successfully.';
                 $type = 'insert';
@@ -246,5 +287,34 @@ class LeadController extends ClientCoreController
         }
 
         return json_encode($return_data);
+    }
+
+    /**
+     * Add leads to emailmanager
+     *
+     * @return array
+     */
+    public function emailmanager()
+    {
+        $return_data = ['status' => 0];
+        $user_id = \Auth::id();
+        $ids = Input::get('ids');
+
+        if (count($ids) > 0) {
+            $data = [
+                'user_id' => $user_id,
+                'lead_ids' => json_encode($ids)
+            ];
+
+            \App\Models\Emailmanager::create($data);
+
+            $return_data['status'] = 1;
+            $return_data['message'] = 'Redirecting to Email manager, please wait for a moment.';
+        }
+        else {
+            $return_data['message'] = 'Please select at least one lead.';
+        }
+
+        return $return_data;
     }
 }

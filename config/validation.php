@@ -20,6 +20,17 @@ return [
 		'company_name' => 'required',
 		'other_info.title' => 'required',
 		'other_info.city' => 'required'
+    ],
+
+    'funnelupdate' => [
+        'name' => 'required',
+        'subject' => 'required',
+        'content' => 'required'
+    ],
+
+    'sendemail' => [
+        'leads' => 'required',
+        'funnel' => 'required'
     ]
 
 ]

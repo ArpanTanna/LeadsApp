@@ -14954,6 +14954,7 @@ a:hover {
 
 .loader-parent {
   position: relative;
+  min-height: 100px;
 }
 
 .loader-parent.loading::after {
@@ -15118,5 +15119,24 @@ header .navbar .navbar-nav .active a.nav-link {
 
 .center-container .status-box .progress-bar:hover {
   box-shadow: inset 0 0 3px #000000;
+}
+
+.center-container .ck.ck-editor__editable_inline {
+  min-height: 200px;
+  max-height: 500px;
+  border: 1px solid var(--ck-color-base-border);
+  padding: calc( 2 * var(--ck-spacing-large) );
+  background: var(--ck-color-base-foreground);
+}
+
+.center-container .is-invalid-box .ck.ck-editor__editable_inline {
+  border-color: #e3342f;
+}
+
+.modal-dialog .ei-box {
+  padding: 10px;
+  margin-bottom: 10px;
+  background: #ddd;
+  border: 1px solid #3490dc;
 }
 

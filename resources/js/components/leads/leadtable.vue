@@ -1,14 +1,18 @@
 <template>
     <div class="clearfix mt-4">
-        <div class="table-info-pre clearfix">
+        <div class="table-info-pre clearfix mb-2">
             <div class="row">
                 <div class="col-md-6">
                     <p>Total Records: <span class="badge badge-primary">{{items.length}}</span> </p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <b-button @click="emailmanager" variant="primary">Send to Email Manager</b-button>
                 </div>
             </div>
         </div>
         <div class="clearfix loader-parent" :class="{'loading': isLoader}">
             <b-table class="ttype1" ref="tableLead" striped hover responsive :busy="isBusy"
+                     selectable select-mode="multi" @row-selected="rowSelected"
                      no-local-sorting no-sort-reset @sort-changed="sortingChanged" :sort-by.sync="mySortBy" :sort-desc.sync="mySortDesc"
                      :items="itemsFiltered" :fields="fields">
                 <template slot="HEAD_col1" slot-scope="data">
@@ -23,6 +27,7 @@
                     >
                         <template slot="title">Actions</template>
                         <div>
+                            <p class="m-0 mb-1"><a href="javascript:void(0);" @click="infoInit(data.item)">Info</a></p>
                             <p class="m-0 mb-1"><a href="javascript:void(0);" @click="editInit(data.item)">Edit</a></p>
                             <p class="m-0"><a href="javascript:void(0);" @click="deleteInit(data.item, data.index)">Delete</a></p>
                         </div>
@@ -86,6 +91,7 @@
                 {'key': 'contact', 'sortable': false}
             ],
             items: [],
+            leadSelected: [],
             isBusy: false,
             mySortBy: '',
             mySortDesc: false,
@@ -199,6 +205,10 @@
                 }
             },
 
+            infoInit(data) {
+                this.$emit('tableTriggerFrom', {'type': 'infoModal', 'data': data});
+            },
+
             editInit(data) {
                 this.$emit('tableTriggerFrom', {'type': 'edit', 'data': data});
             },
@@ -227,6 +237,50 @@
                             $this.$emit('alertTrigger', {'type': 2, 'message': 'An error occurred.'});
                             $this.isLoader = 0;
                         });
+                }
+            },
+
+            /*
+             * Get selected lead ids
+             */
+            rowSelected(items) {
+                let selectedIds = [];
+                items.map(function (item) {
+                    selectedIds.push(item.id);
+                });
+                this.leadSelected = selectedIds;
+            },
+
+            /*
+             * Selected rows save to DB
+             * And send to emailmanager page
+             */
+            emailmanager() {
+                if(this.leadSelected.length > 0) {
+                    this.isLoader = 1;
+                    this.$http.post(
+                        '/client/lead/apiaccess/emailmanager',
+                        {'ids': this.leadSelected}
+                    )
+                        .then(function(responseF)
+                            {
+                                let response = responseF.body;
+                                if(response.status == 1) {
+                                    this.$emit('alertTrigger', {'type': 1, 'message': response.message});
+                                    window.location.href = '/client/emailmanager';
+                                }
+                                else {
+                                    this.$emit('alertTrigger', {'type': 2, 'message': response.message});
+                                }
+                                this.isLoader = 0;
+                            }, function() {
+                                this.$emit('alertTrigger', {'type': 2, 'message': 'An error occurred.'});
+                                this.isLoader = 0;
+                            }
+                        );
+                }
+                else {
+                    this.$emit('alertTrigger', {'type': 2, 'message': 'Please select at least one lead.'});
                 }
             }
         },

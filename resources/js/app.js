@@ -44,6 +44,8 @@ Vue.http.interceptors.push((request, next) => {
  */
 
 Vue.component('lead-page', require('./components/leads/leadpage.vue').default);
+Vue.component('funnel-page', require('./components/funnels/funnelpage.vue').default);
+Vue.component('emailmanager-page', require('./components/emailmanager/emailmanager.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -52,12 +54,12 @@ Vue.component('lead-page', require('./components/leads/leadpage.vue').default);
  */
 
 import Layout from "./components/layout/Layout";
-const app = new Vue({
+window.app = new Vue({
     el: '#app',
     extends: Layout,
     delimiters: ["<%","%>"],
     data: () => ({
-        lbh: 0
+        lbh: 0,
     }),
     methods: {
         leftbarHeight() {
